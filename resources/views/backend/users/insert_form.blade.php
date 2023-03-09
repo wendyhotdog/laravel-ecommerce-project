@@ -96,7 +96,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/users">
+            <a class="nav-link {{Str::of(url()->current())->contains("/users")? "active" : ""}}" href="{{url("/users")}}">
               <span data-feather="file" class="align-text-bottom"></span>
               Kullanıcılar
             </a>
@@ -108,69 +108,61 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Yönetim Paneli</h1>
+          <h2>Kullanıcılar</h2>
       </div>
 
 
-      <h2>Kullanıcılar</h2>
+
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
                 <a href="/users/create" class="btn btn-sm btn-outline-danger">Yeni Ekle</a>
             </div>
         </div>
+        <h2>Yeni Kullanıcı Ekle</h2>
       <div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th scope="col">Sıra No</th>
-              <th scope="col">Ad Soyad</th>
-              <th scope="col">Eposta</th>
-              <th scope="col">Durum</th>
-              <th scope="col">İşlemler</th>
-            </tr>
-          </thead>
-          <tbody>
-          @if(count($users)>0)
-              @foreach($users as $user)
-            <tr>
-              <td>{{$loop->iteration}}</td>
-              <td>{{$user->name}}</td>
-                <td>{{$user->email}}</td>
-                <td>{{$user->is_active}}</td>
-                <td>
-                    <ul class="nav float-start">
-                        <li class="nav-item">
-                            <a class="nav-link text-black" href="{{url("/users/$user->user_id/edit")}}">
-                                <span data-feather="edit"></span>
-                                Güncelle
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link list-item-delete text-black" href="{{url("/users/$user->user_id")}}">
-                                <span data-feather="trash-2"></span>
-                                Sil
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-black" href="/users">
-                                <span data-feather="lock"></span>
-                                Şifre Değiştir
-                            </a>
-                        </li>
-                    </ul>
-                </td>
+        <form action="{{url("/users")}}" method="POST">
+            @csrf
+            <div class="row">
+                <div class="col-lg-6">
+                        <label for="name" class="form-label">Ad Soyad</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Ad Soyad Giriniz">
+                </div>
+                    <div class="col-lg-6">
+                        <label for="email" class="form-label">Email Giriniz</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="E posta Giriniz">
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label for="password" class="form-label">Şifre Giriniz</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi Giriniz">
+                </div>
+                <div class="col-lg-6">
+                    <label for="password2" class="form-label">Şifre Tekrarı</label>
+                    <input type="password" class="form-control" id="password2" name="password2" placeholder="Şifrenizi Tekrar Giriniz">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-check mt-4">
+                        <input class="form-check-input" type="checkbox" id="is_admin" name="is_admin">
+                        <label class="form-check-label" for="is_admin">Yetkili Kullanıcı</label>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-check mt-4">
+                        <input class="form-check-input" type="checkbox" id="is_active" name="is_active">
+                        <label class="form-check-label" for="is_active">Aktif Kullanıcı</label>
+                    </div>
+                </div>
+            </div>
 
-            </tr>
-              @endforeach
-          @else
-              <tr>
-                  <td colspan="5">
-                      <p class="text-center">Herhangi bir kullanıcı bulunamadı</p>
-                  </td>
-              </tr>
-          @endif
-          </tbody>
-        </table>
+            <div class="row">
+                    <div class="col-12">
+                         <button type="submit" class="btn btn-success mt-2">Kaydet</button>
+                    </div>
+            </div>
+        </form>
       </div>
     </main>
   </div>
